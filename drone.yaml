@@ -1,17 +1,56 @@
----
 kind: pipeline
-type: docker
 name: default
 
-steps:
-- name: backend
-  image: golang
-  commands:
-  - go build
-  - go test
+workspace:
+  base: /go
+  path: src/github.com/webhookrelay/app
 
-- name: frontend
-  image: node
+steps:
+- name: build
+  image: golang:1.11.4
   commands:
-  - npm install
-  - npm run test
+    - cd cmd/app && go build
+
+- name: unit-test
+  image: golang:1.11.4
+  commands:
+    - go test -v `go list ./... `
+
+- name: end-to-end
+  image: golang:1.11.4
+  environment:    
+    POSTGRES_HOST: database
+    POSTGRES_USER: pguser
+    POSTGRES_PASSWORD: pgpass
+    POSTGRES_DB: pgdb     
+  commands:
+    - make install-transponder
+    - make e2e
+
+- name: slack
+  image: plugins/slack
+  settings:
+    webhook:
+      from_secret: slack_url
+    channel: general
+    username: drone
+    icon_url: https://i.pinimg.com/originals/51/29/a4/5129a48ddad9e8408d2757dd10eb836f.jpg
+
+- name: docker  
+  image: plugins/docker
+  settings:
+    repo: namespace/repo
+    auto_tag: true
+    username:
+      from_secret: docker_username
+    password:
+      from_secret: docker_password
+
+services:
+- name: database
+  image: postgres
+  environment:
+    POSTGRES_USER: pguser
+    POSTGRES_PASSWORD: pgpass
+    POSTGRES_DB: pgdb
+
