@@ -5,11 +5,11 @@ workspace:
   base: /go
   path: src/github.com/webhookrelay/app
 
-steps:
-- name: build
-  image: golang:1.11.4
-  commands:
-    - C:\>D:/app && go build
+# steps:
+# - name: build
+#   image: golang:1.11.4
+#   commands:
+#     - C:\>D:/app && go build
 
 - name: unit-test
   image: golang:1.11.4
