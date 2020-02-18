@@ -3,14 +3,14 @@ name: default
 
 workspace:
   base: /go
-  path: src/github.com/webhookrelay/app
+  path: src/github.com/webhookrelay/relay-go
 
 steps:
 - name: build
   image: golang:1.11.4
   commands:
     - go get -v -u golang.org/x/oauth2
-#     - go test
+    - go test
     - go build
 
 - name: unit-test
