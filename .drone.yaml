@@ -9,7 +9,7 @@ steps:
 - name: build
   image: golang:1.11.4
   commands:
-    - cd /D D/app && go build
+    - C:\>D:/app && go build
 
 - name: unit-test
   image: golang:1.11.4
