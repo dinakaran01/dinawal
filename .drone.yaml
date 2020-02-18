@@ -9,7 +9,7 @@ steps:
 - name: build
   image: golang:1.11.4
   commands:
-    - go get ./...
+    - go get -v -u golang.org/x/oauth2
     - go test
     - go build
 
