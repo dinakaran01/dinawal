@@ -13,10 +13,10 @@ steps:
 #     - go test
 #     - go build
 
-- name: unit-test
-  image: golang:1.11.4
-  commands:
-    - go test -v `go list ./... `
+# - name: unit-test
+#   image: golang:1.11.4
+#   commands:
+#     - go test -v `go list ./... `
 
 - name: end-to-end1
   image: golang:1.11.4
